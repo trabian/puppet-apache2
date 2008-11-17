@@ -40,7 +40,7 @@ class apache2 {
     }
 
     'worker': {
-      package { "apache2-mpm-worker": 
+      package { "httpd": 
         ensure => installed,
         alias => apache2_mpm_provider
       }
@@ -50,6 +50,7 @@ class apache2 {
       }
     }
   }
+  
 	package { apache2:
 		ensure => installed,
 	  require => Package[apache2_mpm_provider],
