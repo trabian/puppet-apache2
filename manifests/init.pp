@@ -50,9 +50,8 @@ class apache2 {
       }
     }
   }
-  
-	package { apache2:
-	  name => "httpd",
+
+	package { httpd:
 		ensure => installed
 	}
 
@@ -60,7 +59,7 @@ class apache2 {
 		ensure => running,
 		pattern => "/usr/sbin/apache2",
 		hasrestart => true,
-		require => Package[apache2]
+		require => Package[httpd]
 	}
 
   # using checksum => mtime and notify ensures that any changes to this dir 
@@ -68,7 +67,7 @@ class apache2 {
 	file { $apache_conf:
 		ensure => directory, checksum => mtime,
 		mode => 644, owner => root, group => root,
-		require => Package[apache2],
+		require => Package[httpd],
 		notify => Exec["reload-apache2"];
 	}
 
@@ -76,7 +75,7 @@ class apache2 {
 	file { $apache_includes:
 		ensure => directory, checksum => mtime,
 		mode => 644, owner => root, group => root,
-		require => Package[apache2],
+		require => Package[httpd],
 		notify => Exec["reload-apache2"];
 	}
 	
