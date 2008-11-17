@@ -53,7 +53,7 @@ class apache2 {
 
 	service { apache2:
 		ensure => running,
-		pattern => "/usr/sbin/apache2",
+		pattern => "/usr/sbin/apachectl",
 		hasrestart => true,
 		require => Package[httpd]
 	}
@@ -77,7 +77,7 @@ class apache2 {
 	
 	# this overwrites the default distro config with one that just includes
 	# $apache_conf and friends
-	file { "/etc/apache2/apache2.conf":
+	file { "/etc/httpd/conf/httpd.conf":
 	  ensure => present,
 	  mode => 644,
 	  owner => root,
@@ -87,7 +87,7 @@ class apache2 {
 	}
 
   # nuke the package-provided ports.conf
-  file {"/etc/apache2/ports.conf": ensure => absent }
+  file {"/etc/httpd/conf/ports.conf": ensure => absent }
 
   # make sure the default site isn't present.
 	exec { "/usr/sbin/a2dissite default":
@@ -100,13 +100,13 @@ class apache2 {
 	# a waste of time. When the module-config changes, a force-reload is
 	# needed.
 	exec { "reload-apache2":
-		command => "/etc/init.d/apache2 reload",
+		command => "/etc/init.d/httpd reload",
 		refreshonly => true,
 		before => [ Service["apache2"], Exec["force-reload-apache2"] ]
 	}
 
 	exec { "force-reload-apache2":
-		command => "/etc/init.d/apache2 force-reload",
+		command => "/etc/init.d/httpd force-reload",
 		refreshonly => true,
 		before => Service["apache2"],
 	}
@@ -187,13 +187,13 @@ class apache2 {
       }
     }
 	  
-	  # now, enable it.
-		exec { "/usr/sbin/a2ensite $name":
-			unless => "/bin/sh -c '[ -L ${apache_sites}-enabled/$name ] \\
-						&& [ ${apache_sites}-enabled/$name -ef ${apache_sites}-available/$name ]'",
-			notify => Exec["reload-apache2"],
-			require => File["site-$name"],
-		}
+    #     # now, enable it.
+    # exec { "/usr/sbin/a2ensite $name":
+    #   unless => "/bin/sh -c '[ -L ${apache_sites}-enabled/$name ] \\
+    #         && [ ${apache_sites}-enabled/$name -ef ${apache_sites}-available/$name ]'",
+    #   notify => Exec["reload-apache2"],
+    #   require => File["site-$name"],
+    # }
 	}
 
   # Define a site config fragment
