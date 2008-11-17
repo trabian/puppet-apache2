@@ -1,0 +1,44 @@
+ServerRoot "/etc/apache2"
+
+Listen 192.168.30.6:80
+
+#
+# The accept serialization lock file MUST BE STORED ON A LOCAL DISK.
+#
+#<IfModule !mpm_winnt.c>
+#<IfModule !mpm_netware.c>
+LockFile /var/lock/apache2/accept.lock
+#</IfModule>
+#</IfModule>
+
+PidFile /var/run/apache2.pid
+
+Timeout 300
+
+KeepAlive On
+
+MaxKeepAliveRequests 100
+
+KeepAliveTimeout 15
+
+User www-data
+Group www-data
+
+AccessFileName .htaccess
+
+<Files ~ "^\.ht">
+    Order allow,deny
+    Deny from all
+</Files>
+
+TypesConfig /etc/mime.types
+
+DefaultType text/plain
+
+HostnameLookups Off
+
+ServerTokens Prod
+
+ServerSignature Off
+
+DirectoryIndex index.html
