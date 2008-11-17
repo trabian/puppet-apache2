@@ -51,10 +51,6 @@ class apache2 {
     }
   }
 
-	package { httpd:
-		ensure => installed
-	}
-
 	service { apache2:
 		ensure => running,
 		pattern => "/usr/sbin/apache2",
