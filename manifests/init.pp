@@ -52,8 +52,8 @@ class apache2 {
   }
   
 	package { apache2:
-		ensure => installed,
-	  require => Package[httpd],
+	  name => "httpd",
+		ensure => installed
 	}
 
 	service { apache2:
