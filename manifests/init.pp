@@ -53,7 +53,7 @@ class apache2 {
   
 	package { apache2:
 		ensure => installed,
-	  require => Package[apache2_mpm_provider],
+	  require => Package[httpd],
 	}
 
 	service { apache2:
